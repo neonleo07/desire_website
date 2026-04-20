@@ -2,31 +2,36 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const PHASES = [
   {
     number: '01',
     title: 'Discovery & System Analysis',
     desc: 'Before a single line of code is written, we deconstruct your objectives. We perform high-level system analysis to identify terminal bottlenecks and architectural requirements.',
-    bullets: ['Market Logic Analysis', 'Technical Debt Assessment', 'Objective Mapping', 'Infrastructure Strategy']
+    bullets: ['Market Logic Analysis', 'Technical Debt Assessment', 'Objective Mapping', 'Infrastructure Strategy'],
+    image: '/images/process-discovery.png'
   },
   {
     number: '02',
     title: 'Precision Prototyping',
     desc: 'We map user flows with surgical precision, creating high-fidelity prototypes that define the visual absolute of the project. This is where design meets technical feasibility.',
-    bullets: ['UX Interaction Mapping', 'Geometric UI Frameworks', 'Design System Architecture', 'Rapid Feedback Loops']
+    bullets: ['UX Interaction Mapping', 'Geometric UI Frameworks', 'Design System Architecture', 'Rapid Feedback Loops'],
+    image: '/images/process-prototyping.png'
   },
   {
     number: '03',
     title: 'Operational Engineering',
     desc: 'Our deployment team builds the digital machine. Using a strictly component-based architecture, we ensure every element is optimized for speed and resilience.',
-    bullets: ['Next.js Frameworking', 'Logic Integration', 'Security Hardening', 'Performance Auditing']
+    bullets: ['Next.js Frameworking', 'Logic Integration', 'Security Hardening', 'Performance Auditing'],
+    image: '/images/process-engineering.png'
   },
   {
     number: '04',
     title: 'Scale & Optimization',
     desc: 'The machine is deployed. We integrate real-time analytics and performance monitoring to ensure the system scales infinitely without structural collapse.',
-    bullets: ['Vercel Deployment', 'Load Balancing', 'SEO Dominance Tuning', 'Iterative Evolution']
+    bullets: ['Vercel Deployment', 'Load Balancing', 'SEO Dominance Tuning', 'Iterative Evolution'],
+    image: '/images/process-scale.png'
   }
 ]
 
@@ -89,10 +94,15 @@ export default function ProcessPage() {
                   </div>
                   
                   {/* Decorative context box */}
-                  <div className="hidden lg:block bg-surface-container border border-outline-variant/10 p-10 rounded-sm">
-                    <div className="h-full border border-dashed border-outline-variant/30 flex items-center justify-center p-10">
-                      <span className="text-[60px] font-black text-on-surface-variant/5">VOID_PHASE_{phase.number}</span>
-                    </div>
+                  <div className="hidden lg:block relative aspect-square bg-surface-container border border-outline-variant/10 rounded-sm overflow-hidden">
+                    <Image
+                      src={phase.image}
+                      alt={phase.title}
+                      fill
+                      className="object-cover transition-transform duration-700 hover:scale-105"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-br from-surface-container-lowest/40 to-transparent pointer-events-none" />
                   </div>
                 </div>
               </motion.div>

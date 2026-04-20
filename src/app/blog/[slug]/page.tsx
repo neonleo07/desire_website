@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { sanityFetch } from '@/sanity/lib/client'
 import { blogPostBySlugQuery, blogPostSlugsQuery } from '@/sanity/lib/queries'
 import { PortableTextRenderer } from '@/components/ui/PortableTextRenderer'
+import Image from 'next/image'
 import type { IBlogPost } from '@/types'
 
 export const revalidate = 60
@@ -52,6 +53,7 @@ const FALLBACK_POST = {
   slug: 'architecture-of-infinite-scale',
   publishedAt: '2026-04-10T10:00:00Z',
   readingTime: 8,
+  image: '/images/insight-scale.png',
   content: null, // We'll hardcode the design content in the component for the fallback
 }
 
@@ -89,6 +91,19 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[0.92] text-on-surface mb-12">
           {post.title}
         </h1>
+
+        {/* Hero Image */}
+        <div className="relative aspect-video w-full bg-surface-container rounded-sm overflow-hidden mb-16 border border-outline-variant/10">
+          <Image
+            src={post.image || (post.coverImage as any)?.url || '/images/insight-scale.png'}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+            sizes="(max-width: 1024px) 100vw, 720px"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/40 to-transparent pointer-events-none" />
+        </div>
 
         {/* Post Content */}
         <article className="prose prose-invert prose-p:text-on-surface-variant prose-p:leading-relaxed prose-headings:text-on-surface prose-headings:font-bold prose-headings:uppercase prose-headings:tracking-tight hover:prose-a:text-primary prose-a:text-on-surface prose-a:transition-colors max-w-none mb-32">

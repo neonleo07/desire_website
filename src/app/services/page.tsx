@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const SERVICES = [
   {
@@ -10,7 +11,8 @@ const SERVICES = [
     title: 'Full-Stack Development',
     kicker: 'SCALABLE ARCHITECTURE',
     desc: 'We engineer robust digital machines using React, Node.js, and modern distributed systems. Our codebases are designed for the infinite void, ensuring your application handles massive growth without structural failure.',
-    tags: ['React/Next.js', 'PostgreSQL', 'WebGL', 'AWS/GCP']
+    tags: ['React/Next.js', 'PostgreSQL', 'WebGL', 'AWS/GCP'],
+    image: '/images/service-dev.png'
   },
   {
     id: 'design',
@@ -18,7 +20,8 @@ const SERVICES = [
     title: 'UI/UX Design',
     kicker: 'SURGICAL PRECISION',
     desc: 'High-fidelity interfaces mapped with geometric letterforms and obsidian surfaces. We prioritize hierarchy and speed, creating user experiences that feel instantaneous and premium.',
-    tags: ['Figma Engineering', 'Motion Prototyping', 'Design Systems', 'Visual Logic']
+    tags: ['Figma Engineering', 'Motion Prototyping', 'Design Systems', 'Visual Logic'],
+    image: '/images/service-design.png'
   },
   {
     id: 'branding',
@@ -26,7 +29,8 @@ const SERVICES = [
     title: 'Identity Systems',
     kicker: 'TOTAL BRANDING',
     desc: 'Brand identities engineered for consistency and impact. We build the visual logic that defines your markets, from typography to complex motion languages.',
-    tags: ['Typography', 'Logistics', 'Guidelines', 'Asset Creation']
+    tags: ['Typography', 'Logistics', 'Guidelines', 'Asset Creation'],
+    image: '/images/service-branding.png'
   },
   {
     id: 'growth',
@@ -34,7 +38,8 @@ const SERVICES = [
     title: 'Growth & SEO',
     kicker: 'DATA DOMINANCE',
     desc: 'Performance optimization as a first-class citizen. We engineer your presence to dominate search rankings and maximize technical conversion across all segments.',
-    tags: ['Technical SEO', 'Analytics', 'Conversion Tuning', 'Meta-Eng']
+    tags: ['Technical SEO', 'Analytics', 'Conversion Tuning', 'Meta-Eng'],
+    image: '/images/service-growth.png'
   }
 ]
 
@@ -89,11 +94,17 @@ export default function ServicesPage() {
                   </div>
                 </div>
                 
-                {/* Visual Placeholder for Services */}
-                <div className={`aspect-square bg-surface-container border border-outline-variant/10 rounded-sm overflow-hidden flex items-center justify-center p-20 ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
-                  <div className="text-[10vw] font-black text-on-surface-variant/5 select-none font-mono">
-                    {service.icon}
-                  </div>
+                {/* Visual Image for Services */}
+                <div className={`relative aspect-square bg-surface-container border border-outline-variant/10 rounded-sm overflow-hidden ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
+                  <Image 
+                    src={service.image} 
+                    alt={service.title}
+                    fill
+                    className="object-cover transition-transform duration-700 hover:scale-105"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  {/* Glassmorphism Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-surface-container-lowest/40 via-transparent to-transparent pointer-events-none" />
                 </div>
               </motion.div>
             ))}

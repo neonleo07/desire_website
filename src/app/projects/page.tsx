@@ -1,9 +1,7 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import { sanityFetch } from '@/sanity/lib/client'
 import { allProjectsQuery } from '@/sanity/lib/queries'
 import type { IProject } from '@/types'
-import { Badge } from '@/components/ui/Badge'
+import { ProjectsGallery } from '@/components/sections/ProjectsGallery'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -16,35 +14,35 @@ export const revalidate = 60
 const FALLBACK_PROJECTS = [
   {
     _id: '1',
-    slug: 'aether-financial',
+    slug: { current: 'aether-financial' },
     title: 'Aether Financial',
     tagline: 'Algorithmic Trading Platform Interface',
     thumbnail: { url: '/images/project-dashboard.png' },
-    categories: [{ _id: 'c1', name: 'UI/UX', slug: 'ui-ux' }],
+    categories: [{ _id: 'c1', name: 'UI/UX', slug: { current: 'ui-ux' } }],
   },
   {
     _id: '2',
-    slug: 'nexus-protocol',
+    slug: { current: 'nexus-protocol' },
     title: 'Nexus Protocol',
     tagline: 'Infrastructure Visual Identity',
     thumbnail: { url: '/images/project-infrastructure.png' },
-    categories: [{ _id: 'c2', name: 'BRANDING', slug: 'branding' }],
+    categories: [{ _id: 'c2', name: 'BRANDING', slug: { current: 'branding' } }],
   },
   {
     _id: '3',
-    slug: 'sentinel-zero',
+    slug: { current: 'sentinel-zero' },
     title: 'Sentinel Zero',
     tagline: 'Threat Detection Dashboard',
     thumbnail: { url: '/images/project-dashboard.png' },
-    categories: [{ _id: 'c3', name: 'SYSTEMS', slug: 'systems' }],
+    categories: [{ _id: 'c3', name: 'SYSTEMS', slug: { current: 'systems' } }],
   },
   {
     _id: '4',
-    slug: 'quantum-metrics',
+    slug: { current: 'quantum-metrics' },
     title: 'Quantum Metrics',
     tagline: 'Enterprise Analytics Suite',
     thumbnail: { url: '/images/project-dashboard.png' },
-    categories: [{ _id: 'c4', name: 'DATA', slug: 'data' }],
+    categories: [{ _id: 'c4', name: 'DATA', slug: { current: 'data' } }],
   },
 ]
 
@@ -73,70 +71,8 @@ export default async function ProjectsPage() {
           </p>
         </div>
 
-        {/* Filters (Static for now to match design) */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 border-b border-outline-variant/20 pb-8">
-          <div className="relative max-w-xs w-full">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-xs">🔍</span>
-            <input 
-              type="text" 
-              placeholder="Search projects..." 
-              className="w-full bg-surface-container border border-outline-variant/30 rounded-sm py-3 pl-9 pr-4 text-xs tracking-wider text-on-surface focus:outline-none focus:border-primary-container"
-            />
-          </div>
-          <div className="flex items-center gap-4 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
-            <button className="px-4 py-2 bg-on-surface text-surface-container-lowest text-[10px] font-bold tracking-[0.15em] uppercase rounded-sm flex-shrink-0">ALL</button>
-            <button className="px-4 py-2 border border-outline-variant/30 text-on-surface-variant text-[10px] font-bold tracking-[0.15em] uppercase rounded-sm hover:border-on-surface hover:text-on-surface transition-colors flex-shrink-0">DEVELOPMENT</button>
-            <button className="px-4 py-2 border border-outline-variant/30 text-on-surface-variant text-[10px] font-bold tracking-[0.15em] uppercase rounded-sm hover:border-on-surface hover:text-on-surface transition-colors flex-shrink-0">DESIGN</button>
-            <button className="px-4 py-2 border border-outline-variant/30 text-on-surface-variant text-[10px] font-bold tracking-[0.15em] uppercase rounded-sm hover:border-on-surface hover:text-on-surface transition-colors flex-shrink-0">BRANDING</button>
-            <button className="px-4 py-2 border border-outline-variant/30 text-on-surface-variant text-[10px] font-bold tracking-[0.15em] uppercase rounded-sm hover:border-on-surface hover:text-on-surface transition-colors flex-shrink-0">GROWTH</button>
-          </div>
-        </div>
-
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20 mb-32">
-          {projects.map((project) => (
-            <Link 
-              key={project._id} 
-              href={`/projects/${project.slug}`}
-              className="group block"
-            >
-              <div className="flex flex-col gap-4">
-                <div>
-                  {/* Domain Tags */}
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    {project.categories?.map((cat) => (
-                      <span 
-                        key={cat._id}
-                        className="text-[9px] font-bold tracking-[0.2em] uppercase text-primary border border-primary/20 px-2 py-0.5 rounded-full"
-                      >
-                        {cat.name}
-                      </span>
-                    ))}
-                  </div>
-                  <h2 className="text-xl md:text-2xl font-bold text-on-surface group-hover:text-primary transition-colors flex items-center justify-between">
-                    {project.title}
-                    <span className="opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-primary">→</span>
-                  </h2>
-                  <p className="text-xs text-on-surface-variant mt-1 tracking-wide">{project.tagline}</p>
-                </div>
-                
-                <div className="relative aspect-[16/9] md:aspect-[4/3] w-full overflow-hidden rounded-sm bg-surface-container">
-                  {(project.thumbnail as any)?.url && (
-                    <Image
-                      src={(project.thumbnail as any).url}
-                      alt={project.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                  )}
-                  {/* Subtle inner shadow for depth */}
-                  <div className="absolute inset-0 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)] rounded-sm z-10 pointer-events-none" />
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+        {/* Interactive Gallery (Client Component) */}
+        <ProjectsGallery initialProjects={projects} />
 
         {/* Project Demo Section */}
         <div className="border-t border-outline-variant/20 pt-20 max-w-5xl mx-auto text-center">

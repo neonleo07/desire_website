@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { sanityFetch } from '@/sanity/lib/client'
 import { allBlogPostsQuery } from '@/sanity/lib/queries'
 import type { Metadata } from 'next'
@@ -19,6 +20,7 @@ const FALLBACK_POSTS = [
     excerpt: 'Moving beyond serverless. How we structure micro-frontends to handle unpredictable load spikes without compromising the aesthetic void.',
     publishedAt: '2026-04-10T10:00:00Z',
     readingTime: 8,
+    image: '/images/insight-scale.png'
   },
   {
     _id: '2',
@@ -27,6 +29,7 @@ const FALLBACK_POSTS = [
     excerpt: 'Treating letterforms as structural elements rather than mere communication vehicles in modern brutalist interfaces.',
     publishedAt: '2026-03-24T10:00:00Z',
     readingTime: 5,
+    image: '/images/insight-typography.png'
   },
   {
     _id: '3',
@@ -35,6 +38,7 @@ const FALLBACK_POSTS = [
     excerpt: 'Why perceived performance matters more than actual load times, and how to engineer interfaces that feel instantaneous.',
     publishedAt: '2026-02-15T10:00:00Z',
     readingTime: 6,
+    image: '/images/insight-speed.png'
   },
   {
     _id: '4',
@@ -43,6 +47,7 @@ const FALLBACK_POSTS = [
     excerpt: 'Ignoring vanity numbers. A framework for tracking high-intent user interactions in minimal, content-sparse environments.',
     publishedAt: '2026-01-20T10:00:00Z',
     readingTime: 7,
+    image: '/images/insight-metrics.png'
   },
 ]
 
@@ -75,21 +80,35 @@ export default async function BlogListingPage() {
         <div className="flex flex-col gap-12">
           {posts.map((post) => (
             <article key={post._id} className="group border-b border-outline-variant/10 pb-12 last:border-0">
-              <Link href={`/blog/${post.slug}`} className="block">
-                <div className="flex items-center gap-4 text-[10px] font-bold tracking-[0.2em] uppercase text-on-surface-variant/50 mb-3">
-                  <time dateTime={post.publishedAt}>
-                    {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                  </time>
-                  <span>•</span>
-                  <span>{post.readingTime} MIN READ</span>
+              <Link href={`/blog/${post.slug}`} className="grid grid-cols-1 md:grid-cols-[1fr_200px] gap-8 items-start">
+                <div>
+                  <div className="flex items-center gap-4 text-[10px] font-bold tracking-[0.2em] uppercase text-on-surface-variant/50 mb-3">
+                    <time dateTime={post.publishedAt}>
+                      {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                    </time>
+                    <span>•</span>
+                    <span>{post.readingTime} MIN READ</span>
+                  </div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-on-surface group-hover:text-primary transition-colors tracking-tight mb-3 flex items-center justify-between">
+                    {post.title}
+                    <span className="opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-primary">→</span>
+                  </h2>
+                  <p className="text-sm text-on-surface-variant leading-relaxed">
+                    {post.excerpt}
+                  </p>
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold text-on-surface group-hover:text-primary transition-colors tracking-tight mb-3 flex items-center justify-between">
-                  {post.title}
-                  <span className="opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-primary">→</span>
-                </h2>
-                <p className="text-sm text-on-surface-variant leading-relaxed">
-                  {post.excerpt}
-                </p>
+                
+                {/* Post Thumbnail */}
+                <div className="relative aspect-[16/9] md:aspect-square w-full bg-surface-container rounded-sm overflow-hidden border border-outline-variant/10 md:order-last order-first mb-4 md:mb-0">
+                  <Image 
+                    src={post.image || (post.coverImage as any)?.url || `/images/insight-${['scale', 'typography', 'speed', 'metrics'][posts.indexOf(post) % 4]}.png`} 
+                    alt={post.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, 200px"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/60 to-transparent pointer-events-none" />
+                </div>
               </Link>
             </article>
           ))}
