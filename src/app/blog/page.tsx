@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { sanityFetch } from '@/sanity/lib/client'
 import { allBlogPostsQuery } from '@/sanity/lib/queries'
 import type { Metadata } from 'next'
+import type { IBlogPost } from '@/types'
 
 export const metadata: Metadata = {
   title: 'Insights | Desire Creatives',
@@ -12,55 +13,61 @@ export const metadata: Metadata = {
 export const revalidate = 60
 
 // Add fallback data just in case Sanity has no blog posts yet
-const FALLBACK_POSTS = [
+const FALLBACK_POSTS: IBlogPost[] = [
   {
     _id: '1',
-    slug: 'architecture-of-infinite-scale',
+    _type: 'blogPost',
+    slug: { current: 'architecture-of-infinite-scale' },
     title: 'The Architecture of Infinite Scale',
     excerpt: 'Moving beyond serverless. How we structure micro-frontends to handle unpredictable load spikes without compromising the aesthetic void.',
     publishedAt: '2026-04-10T10:00:00Z',
     readingTime: 8,
-    image: '/images/insight-scale.png'
+    coverImage: { asset: { url: '/images/insight-scale.png' } },
+    content: []
   },
   {
     _id: '2',
-    slug: 'typography-as-geometry',
+    _type: 'blogPost',
+    slug: { current: 'typography-as-geometry' },
     title: 'Typography as Geometry',
     excerpt: 'Treating letterforms as structural elements rather than mere communication vehicles in modern brutalist interfaces.',
     publishedAt: '2026-03-24T10:00:00Z',
     readingTime: 5,
-    image: '/images/insight-typography.png'
+    coverImage: { asset: { url: '/images/insight-typography.png' } },
+    content: []
   },
   {
     _id: '3',
-    slug: 'illusion-of-speed',
+    _type: 'blogPost',
+    slug: { current: 'illusion-of-speed' },
     title: 'The Illusion of Speed',
     excerpt: 'Why perceived performance matters more than actual load times, and how to engineer interfaces that feel instantaneous.',
     publishedAt: '2026-02-15T10:00:00Z',
     readingTime: 6,
-    image: '/images/insight-speed.png'
+    coverImage: { asset: { url: '/images/insight-speed.png' } },
+    content: []
   },
   {
     _id: '4',
-    slug: 'metrics-in-the-void',
+    _type: 'blogPost',
+    slug: { current: 'metrics-in-the-void' },
     title: 'Metrics in the Void',
     excerpt: 'Ignoring vanity numbers. A framework for tracking high-intent user interactions in minimal, content-sparse environments.',
     publishedAt: '2026-01-20T10:00:00Z',
     readingTime: 7,
-    image: '/images/insight-metrics.png'
+    coverImage: { asset: { url: '/images/insight-metrics.png' } },
+    content: []
   },
 ]
 
 export default async function BlogListingPage() {
-  let posts = await sanityFetch<any[]>({
+  let posts = await sanityFetch<IBlogPost[]>({
     query: allBlogPostsQuery,
     tags: ['blogPost'],
   })
 
   // Use fallback data if Sanity is empty (to match Stitch design out of the box)
-  if (!posts || posts.length === 0) {
-    posts = FALLBACK_POSTS
-  }
+  const displayPosts = (!posts || posts.length === 0) ? FALLBACK_POSTS : posts
 
   return (
     <div className="min-h-screen bg-surface-container-lowest pt-20 pb-40">
@@ -78,9 +85,9 @@ export default async function BlogListingPage() {
 
         {/* Posts List */}
         <div className="flex flex-col gap-12">
-          {posts.map((post) => (
+          {displayPosts.map((post) => (
             <article key={post._id} className="group border-b border-outline-variant/10 pb-12 last:border-0">
-              <Link href={`/blog/${post.slug}`} className="grid grid-cols-1 md:grid-cols-[1fr_200px] gap-8 items-start">
+              <Link href={`/blog/${post.slug.current}`} className="grid grid-cols-1 md:grid-cols-[1fr_200px] gap-8 items-start">
                 <div>
                   <div className="flex items-center gap-4 text-[10px] font-bold tracking-[0.2em] uppercase text-on-surface-variant/50 mb-3">
                     <time dateTime={post.publishedAt}>
@@ -101,7 +108,7 @@ export default async function BlogListingPage() {
                 {/* Post Thumbnail */}
                 <div className="relative aspect-[16/9] md:aspect-square w-full bg-surface-container rounded-sm overflow-hidden border border-outline-variant/10 md:order-last order-first mb-4 md:mb-0">
                   <Image 
-                    src={post.image || (post.coverImage as any)?.url || `/images/insight-${['scale', 'typography', 'speed', 'metrics'][posts.indexOf(post) % 4]}.png`} 
+                    src={post.coverImage?.url || post.coverImage?.asset?.url || `/images/insight-${['scale', 'typography', 'speed', 'metrics'][displayPosts.indexOf(post) % 4]}.png`} 
                     alt={post.title}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"

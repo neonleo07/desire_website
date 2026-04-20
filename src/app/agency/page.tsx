@@ -38,7 +38,7 @@ export default function AgencyPage() {
             <motion.div {...fadeUp}>
               <h2 className="text-3xl font-black uppercase tracking-tight text-on-surface mb-6">THE TECHNICAL VOID</h2>
               <p className="text-sm md:text-base text-on-surface-variant leading-relaxed mb-6">
-                Most agencies build for the surface. We build for the infrastructure. In an era of infinite noise, we embrace "The Technical Void"—a methodology focused on stripping away structural noise to reveal high-frequency utility.
+                Most agencies build for the surface. We build for the infrastructure. In an era of infinite noise, we embrace &quot;The Technical Void&quot;—a methodology focused on stripping away structural noise to reveal high-frequency utility.
               </p>
               <div className="flex flex-col gap-4 text-sm font-mono text-on-surface-variant/70">
                 <div className="flex items-center gap-4">
@@ -57,9 +57,9 @@ export default function AgencyPage() {
             </motion.div>
 
             <motion.div {...fadeUp} transition={{ delay: 0.2 }} className="bg-surface-container-high p-10 md:p-14 border border-outline-variant/10 rounded-sm">
-              <h3 className="text-xl font-bold uppercase tracking-tight text-on-surface mb-6 italic">"A machine is not finished when there is nothing left to add, but when there is nothing left to take away."</h3>
+              <h3 className="text-xl font-bold uppercase tracking-tight text-on-surface mb-6 italic">&quot;A machine is not finished when there is nothing left to add, but when there is nothing left to take away.&quot;</h3>
               <p className="text-sm text-on-surface-variant leading-relaxed">
-                This is the core of Desire Creatives. We don't just "design websites"—we engineer digital machines that dominate their markets through technical superiority and visual absolute.
+                This is the core of Desire Creatives. We don&apos;t just &quot;design websites&quot;—we engineer digital machines that dominate their markets through technical superiority and visual absolute.
               </p>
             </motion.div>
           </div>
@@ -74,11 +74,12 @@ export default function AgencyPage() {
               { title: 'AUTONOMY', desc: 'Every engineer at Desire is a domain expert, operating with absolute autonomy to solve complex architecture challenges.' },
               { title: 'RIGOR', desc: 'We maintain a strict operational framework. Code is audited, pixels are measured, and performance is non-negotiable.' },
               { title: 'LEGACY', desc: 'We build systems that endure. Our work is designed to scale across generations of technologies.' }
-            ].map((value, i) => (
+            ].map((value) => (
               <motion.div 
                 key={value.title}
                 {...fadeUp}
-                transition={{ delay: i * 0.1 }}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                transition={{ delay: (value as any).delay || 0.1 }}
                 className="p-10 bg-surface-container-lowest"
               >
                 <h3 className="text-xs font-black tracking-[0.2em] text-primary mb-4">{value.title}</h3>

@@ -25,7 +25,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     }
   }
 
-  const ogImage = project?.seo?.ogImage as any;
+  const ogImage = project?.seo?.ogImage;
   
   return {
     title: project?.seo?.metaTitle || `${project?.title || 'Project'} | Desire Creatives`,
@@ -48,21 +48,25 @@ export async function generateStaticParams() {
 }
 
 // Fallback data if Sanity is empty, specifically tailored to match the Stitch design "Nexus Protocol"
-const FALLBACK_PROJECT = {
+const FALLBACK_PROJECT: IProject = {
   _id: 'nexus-fallback',
+  _type: 'project',
   title: 'Nexus Protocol',
-  slug: 'nexus-protocol',
+  slug: { current: 'nexus-protocol' },
   tagline: 'A foundational infrastructure visual identity redefining how scalable data systems are perceived in the decentralized era.',
+  thumbnail: { asset: { url: '/images/project-infrastructure.png' } },
   heroImage: { url: '/images/project-infrastructure.png' },
-  overview: null,
-  challenge: null,
-  solution: null,
+  categories: [{ _id: 'cat-1', _type: 'category', name: 'Infrastructure', slug: { current: 'infra' } }],
+  publishedAt: '2026-04-10T10:00:00Z',
+  overview: [],
+  challenge: [],
+  solution: [],
   metrics: [
     { _key: '1', value: '40%', label: 'Decreased Load Time', description: 'Optimized asset delivery and streamlined DOM structure resulting in faster render times.' },
     { _key: '2', value: '100%', label: 'WCAG 2.1 AA Compliant', description: 'Accessible high-contrast dark mode ensures readability in critical monitoring environments.' },
     { _key: '3', value: '2.4x', label: 'Faster Incident Resolution', description: 'Clearer typographic hierarchy and color-coded alerts reduced average incident response.' }
   ]
-} as unknown as IProject
+}
 
 export default async function ProjectDetailPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
@@ -103,10 +107,10 @@ export default async function ProjectDetailPage(props: { params: Promise<{ slug:
         </div>
 
         {/* Hero Image */}
-        {(project.heroImage as any)?.url && (
+        {project.heroImage?.url && (
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] mb-32 rounded-sm overflow-hidden bg-surface-container border border-outline-variant/20">
             <Image
-              src={(project.heroImage as any).url}
+              src={project.heroImage.url}
               alt={project.title}
               fill
               className="object-cover"
@@ -128,7 +132,7 @@ export default async function ProjectDetailPage(props: { params: Promise<{ slug:
           <div className="lg:col-span-9 flex flex-col gap-16">
             <div className="text-lg md:text-xl text-on-surface-variant leading-relaxed max-w-3xl">
               {project.overview ? (
-                 <PortableTextRenderer value={project.overview as any} />
+                 <PortableTextRenderer value={project.overview} />
               ) : (
                 <p>
                   Nexus Protocol required a visual language that matched its technical prowess. The existing brand failed to communicate the speed, reliability, and sheer scale of their devops solutions. We engineered a comprehensive visual system rooted in pure black surfaces and high-frequency electric accents, mirroring the feeling of an optimized, high-performance server environment.
@@ -144,7 +148,7 @@ export default async function ProjectDetailPage(props: { params: Promise<{ slug:
                 </h3>
                 <div className="text-sm text-on-surface-variant leading-relaxed">
                   {project.challenge ? (
-                     <PortableTextRenderer value={project.challenge as any} />
+                     <PortableTextRenderer value={project.challenge} />
                   ) : (
                     <p>The legacy interface was cluttered, utilizing outdated 1px border grids and a muddy grey palette that reduced legibility for sysadmins monitoring complex data streams. Crucial alert hierarchies were lost in the visual noise, leading to slower incident response times.</p>
                   )}
@@ -158,7 +162,7 @@ export default async function ProjectDetailPage(props: { params: Promise<{ slug:
                 </h3>
                 <div className="text-sm text-on-surface-variant leading-relaxed">
                   {project.solution ? (
-                     <PortableTextRenderer value={project.solution as any} />
+                     <PortableTextRenderer value={project.solution} />
                   ) : (
                     <p>We implemented &apos;The Technical Void&apos; methodology. By moving to a pure black background and utilizing tonal shifts for sectioning, we eliminated structural noise. Data visualization now relies on vibrant, high-contrast colors against absolute black, ensuring instant recognition of system states.</p>
                   )}

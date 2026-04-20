@@ -187,7 +187,7 @@ export default function Home() {
             {/* Service Cards  2x2 Grid */}
             <Reveal direction="up" distance={40} stagger={0.1}>
               <div className="grid gap-px bg-outline-variant/10 md:grid-cols-2">
-              {SERVICES.map((service, i) => (
+              {SERVICES.map((service) => (
                 <div
                   key={service.title}
                   className="group p-8 md:p-10 bg-surface-container hover:bg-surface-container-high transition-colors duration-300"
@@ -228,7 +228,7 @@ export default function Home() {
 
           <Reveal direction="up" distance={40} stagger={0.15}>
             <div className="space-y-10">
-              {FEATURED_PROJECTS.map((project, i) => (
+              {FEATURED_PROJECTS.map((project) => (
                 <div key={project.slug}>
                   <Link href={`/projects/${project.slug}`} className="group block">
                     {/* Image */}
@@ -276,7 +276,7 @@ export default function Home() {
 
           <Reveal direction="up" distance={30} stagger={0.1}>
             <div className="grid gap-6 md:grid-cols-3">
-              {RECENT_PROJECTS.map((project, i) => (
+              {RECENT_PROJECTS.map((project) => (
                 <div key={project.slug}>
                   <Link href={`/projects/${project.slug}`} className="group block">
                     <div className="relative aspect-[4/3] overflow-hidden rounded-sm bg-surface-container">
@@ -323,7 +323,7 @@ export default function Home() {
 
           <Reveal direction="up" distance={40} stagger={0.1}>
             <div className="grid gap-8 md:grid-cols-4">
-              {METHODOLOGY.map((step, i) => (
+              {METHODOLOGY.map((step) => (
                 <div key={step.title} className="relative">
                   <div className="flex items-center gap-3 mb-4">
                     <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-on-surface-variant/40">

@@ -1,9 +1,12 @@
 // ── Sanity Image Reference ──────────────────────────────────────
 export interface SanityImageRef {
-  _type: 'image'
-  asset: {
-    _ref: string
-    _type: 'reference'
+  _type?: 'image'
+  asset?: {
+    _ref?: string
+    _type?: 'reference'
+    url?: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    metadata?: any
   }
   hotspot?: {
     x: number
@@ -13,6 +16,7 @@ export interface SanityImageRef {
   }
   alt?: string
   caption?: string
+  url?: string
 }
 
 // ── Portable Text ───────────────────────────────────────────────

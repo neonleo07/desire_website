@@ -24,7 +24,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     }
   }
 
-  const ogImage = post?.seo?.ogImage as any;
+  const ogImage = post?.seo?.ogImage as { url?: string } | undefined;
   
   return {
     title: post?.seo?.metaTitle || `${post?.title || 'Insight'} | Desire Creatives`,
@@ -47,20 +47,22 @@ export async function generateStaticParams() {
 }
 
 // Fallback data if Sanity is empty, specifically matching the Stitch design
-const FALLBACK_POST = {
+const FALLBACK_POST: IBlogPost = {
   _id: 'fallback-post',
+  _type: 'blogPost',
   title: 'The Architecture of Infinite Scale',
-  slug: 'architecture-of-infinite-scale',
+  slug: { current: 'architecture-of-infinite-scale' },
+  excerpt: 'Deconstructing the methodologies required to build systems that scale infinitely.',
   publishedAt: '2026-04-10T10:00:00Z',
   readingTime: 8,
-  image: '/images/insight-scale.png',
-  content: null, // We'll hardcode the design content in the component for the fallback
+  coverImage: { asset: { url: '/images/insight-scale.png' } },
+  content: [], // We'll hardcode the design content in the component for the fallback
 }
 
 export default async function BlogPostPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
 
-  let post = await sanityFetch<any | null>({
+  let post = await sanityFetch<IBlogPost | null>({
     query: blogPostBySlugQuery,
     params: { slug: params.slug },
     tags: ['blogPost', `blogPost:${params.slug}`],
@@ -95,7 +97,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
         {/* Hero Image */}
         <div className="relative aspect-video w-full bg-surface-container rounded-sm overflow-hidden mb-16 border border-outline-variant/10">
           <Image
-            src={post.image || (post.coverImage as any)?.url || '/images/insight-scale.png'}
+            src={post.coverImage?.url || post.coverImage?.asset?.url || '/images/insight-scale.png'}
             alt={post.title}
             fill
             className="object-cover"

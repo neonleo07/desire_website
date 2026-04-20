@@ -54,7 +54,7 @@ export default function ProcessPage() {
               THE OPERATIONAL<br />FRAMEWORK.
             </h1>
             <p className="text-lg md:text-xl text-on-surface-variant leading-relaxed max-w-2xl">
-              A strict, data-driven approach to digital excellence. We don't guess; we engineer.
+              A strict, data-driven approach to digital excellence. We don&apos;t guess; we engineer.
             </p>
           </motion.div>
         </div>
@@ -64,7 +64,7 @@ export default function ProcessPage() {
       <section className="py-20">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10">
           <div className="relative border-l border-outline-variant/20 ml-4 md:ml-10 pl-10 md:pl-20 space-y-32">
-            {PHASES.map((phase, i) => (
+            {PHASES.map((phase) => (
               <motion.div 
                 key={phase.number}
                 {...fadeUp}

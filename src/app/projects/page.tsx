@@ -11,51 +11,61 @@ export const metadata: Metadata = {
 
 export const revalidate = 60
 
-const FALLBACK_PROJECTS = [
+const FALLBACK_PROJECTS: IProject[] = [
   {
     _id: '1',
+    _type: 'project',
     slug: { current: 'aether-financial' },
     title: 'Aether Financial',
     tagline: 'Algorithmic Trading Platform Interface',
-    thumbnail: { url: '/images/project-dashboard.png' },
-    categories: [{ _id: 'c1', name: 'UI/UX', slug: { current: 'ui-ux' } }],
+    thumbnail: { asset: { url: '/images/project-dashboard.png' } },
+    categories: [{ _id: 'c1', _type: 'category', name: 'UI/UX', slug: { current: 'ui-ux' } }],
+    publishedAt: '2026-04-10T10:00:00Z',
+    overview: []
   },
   {
     _id: '2',
+    _type: 'project',
     slug: { current: 'nexus-protocol' },
     title: 'Nexus Protocol',
     tagline: 'Infrastructure Visual Identity',
-    thumbnail: { url: '/images/project-infrastructure.png' },
-    categories: [{ _id: 'c2', name: 'BRANDING', slug: { current: 'branding' } }],
+    thumbnail: { asset: { url: '/images/project-infrastructure.png' } },
+    categories: [{ _id: 'c2', _type: 'category', name: 'BRANDING', slug: { current: 'branding' } }],
+    publishedAt: '2026-04-10T10:00:00Z',
+    overview: []
   },
   {
     _id: '3',
+    _type: 'project',
     slug: { current: 'sentinel-zero' },
     title: 'Sentinel Zero',
     tagline: 'Threat Detection Dashboard',
-    thumbnail: { url: '/images/project-dashboard.png' },
-    categories: [{ _id: 'c3', name: 'SYSTEMS', slug: { current: 'systems' } }],
+    thumbnail: { asset: { url: '/images/project-dashboard.png' } },
+    categories: [{ _id: 'c3', _type: 'category', name: 'SYSTEMS', slug: { current: 'systems' } }],
+    publishedAt: '2026-04-10T10:00:00Z',
+    overview: []
   },
   {
     _id: '4',
+    _type: 'project',
     slug: { current: 'quantum-metrics' },
     title: 'Quantum Metrics',
     tagline: 'Enterprise Analytics Suite',
-    thumbnail: { url: '/images/project-dashboard.png' },
-    categories: [{ _id: 'c4', name: 'DATA', slug: { current: 'data' } }],
+    thumbnail: { asset: { url: '/images/project-dashboard.png' } },
+    categories: [{ _id: 'c4', _type: 'category', name: 'DATA', slug: { current: 'data' } }],
+    publishedAt: '2026-04-10T10:00:00Z',
+    overview: []
   },
 ]
 
 export default async function ProjectsPage() {
-  let projects = await sanityFetch<IProject[]>({
+  const projects = await sanityFetch<IProject[]>({
     query: allProjectsQuery,
     tags: ['project'],
   })
 
   // Use fallback data if Sanity is empty (to match Stitch design out of the box)
-  if (!projects || projects.length === 0) {
-    projects = FALLBACK_PROJECTS as unknown as IProject[]
-  }
+  const displayProjects = (!projects || projects.length === 0) ? FALLBACK_PROJECTS : projects
 
   return (
     <div className="min-h-screen bg-surface-container-lowest pt-20 pb-40">
@@ -72,7 +82,7 @@ export default async function ProjectsPage() {
         </div>
 
         {/* Interactive Gallery (Client Component) */}
-        <ProjectsGallery initialProjects={projects} />
+        <ProjectsGallery initialProjects={displayProjects} />
 
         {/* Project Demo Section */}
         <div className="border-t border-outline-variant/20 pt-20 max-w-5xl mx-auto text-center">
@@ -82,7 +92,7 @@ export default async function ProjectsPage() {
           <div className="relative aspect-video w-full bg-surface-container border border-outline-variant/20 rounded-sm flex items-center justify-center group overflow-hidden cursor-pointer">
              {/* Fake code background or similar from design */}
              <div className="absolute inset-0 opacity-20 font-mono text-[8px] text-left p-6 text-on-surface-variant overflow-hidden truncate">
-               {`const initProject = async (id: string) => { \n  const data = await fetchSystem(id);\n  renderDOM(data);\n  return { status: "ACTIVE" }; \n}\n\n// INITIALIZING SEQUENCE\ninitProject('nexus-protocol').then(sys => {\n  console.log('SYSTEM ONLINE');\n});`}
+               {`const initProject = async (id: string) => { \n  const data = await fetchSystem(id);\n  renderDOM(data);\n  return { status: &quot;ACTIVE&quot; }; \n}\n\n// INITIALIZING SEQUENCE\ninitProject(&apos;nexus-protocol&apos;).then(sys => {\n  console.log(&apos;SYSTEM ONLINE&apos;);\n});`}
              </div>
              
              {/* Play button */}

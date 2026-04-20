@@ -4,7 +4,7 @@ import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-export async function submitContactForm(prevState: any, formData: FormData): Promise<{ success?: boolean; error?: string | null }> {
+export async function submitContactForm(prevState: unknown, formData: FormData): Promise<{ success?: boolean; error?: string | null }> {
   try {
     const name = formData.get('name') as string
     const email = formData.get('email') as string
@@ -16,7 +16,7 @@ export async function submitContactForm(prevState: any, formData: FormData): Pro
     }
 
     // Attempt to send email
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: 'Desire Creatives <onboarding@resend.dev>', // Use a verified domain or onboarding@resend.dev for testing 
       to: process.env.CONTACT_EMAIL || 'support@desirecreatives.com', // Replace with user's actual email or use env
       subject: `New Project Inquiry from ${name}`,

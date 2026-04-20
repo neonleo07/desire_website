@@ -35,7 +35,7 @@ export function LogoCloud({data}: LogoCloudProps) {
                 : urlFor(logo).width(160).url()
             return (
               <div
-                key={`${(logo as any)._key || i}-${i}`}
+                key={`${logo.asset ? 'url' in logo.asset ? (logo.asset as { url: string }).url : i : i}-${i}`}
                 className="flex-shrink-0 flex items-center justify-center px-8 md:px-12"
               >
                 <Image

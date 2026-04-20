@@ -90,9 +90,9 @@ export function ProjectsGallery({ initialProjects }: ProjectsGalleryProps) {
                 </div>
                 
                 <div className="relative aspect-[16/9] md:aspect-[4/3] w-full overflow-hidden rounded-sm bg-surface-container">
-                  {(project.thumbnail as any)?.url && (
+                  {project.thumbnail?.url && (
                     <Image
-                      src={(project.thumbnail as any).url}
+                      src={project.thumbnail.url}
                       alt={project.title}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
